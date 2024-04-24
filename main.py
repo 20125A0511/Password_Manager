@@ -18,6 +18,10 @@ c.execute('''CREATE TABLE IF NOT EXISTS users
 c.execute('''CREATE TABLE IF NOT EXISTS passwords
              (id INTEGER PRIMARY KEY AUTOINCREMENT, website TEXT, username TEXT, password TEXT, user_id INTEGER,
               FOREIGN KEY(user_id) REFERENCES users(id))''')
+#create table for hased_passwords
+c.execute('''CREATE TABLE IF NOT EXISTS hashed_password
+             (id INTEGER PRIMARY KEY AUTOINCREMENT, website TEXT, username TEXT, hashed_password TEXT, user_id INTEGER,
+              FOREIGN KEY(user_id) REFERENCES users(id))''')
 conn.commit()
 
 # Master password
@@ -74,6 +78,7 @@ def register_post():
     
     hashed_password = sha256(password.encode()).hexdigest()
     
+    
     c.execute("INSERT INTO users (username, password, is_master) VALUES (?, ?, ?)", (username, hashed_password, 0))
     conn.commit()
     
@@ -85,7 +90,7 @@ def passwords():
     is_master = request.get_cookie("is_master")
     
     if is_master == "1":
-        c.execute("SELECT * FROM passwords")
+        c.execute("SELECT * FROM hashed_password")
     else:
         c.execute("SELECT * FROM passwords WHERE user_id=?", (user_id,))
         
@@ -109,9 +114,13 @@ def add_post():
         return "Password length is too low. Minimum length should be 8 characters."
 
     hashed_password = sha256(password.encode()).hexdigest()
+    #inserting hashed password into table
+    c.execute("INSERT INTO hashed_password (website, username, hashed_password, user_id) VALUES (?, ?, ?, ?)",
+              (website, username, hashed_password, user_id))
+
     
     c.execute("INSERT INTO passwords (website, username, password, user_id) VALUES (?, ?, ?, ?)",
-              (website, username, hashed_password, user_id))
+              (website, username, password, user_id))
     conn.commit()
 
     redirect('/passwords')
@@ -134,6 +143,8 @@ def logout():
 @app.route('/static/<filename>')
 def server_static(filename):
     return static_file(filename, root='./static')
+
+
 
 if __name__ == '__main__':
     run(app, host='localhost', port=8080, debug=True)
