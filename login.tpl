@@ -5,7 +5,7 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
+            background-color: #e7dcd4; /* Updated background color */
             text-align: center;
         }
         h2 {
@@ -13,7 +13,7 @@
         }
         .login-form {
             margin-top: 20px;
-            background-color: #fff;
+            background-color: #fef9cc;
             padding: 20px;
             border-radius: 8px;
             display: inline-block;
@@ -29,12 +29,12 @@
             transition: all 0.3s ease-in-out;
         }
         input[type="submit"] {
-            background-color: #007BFF;
+            background-color: #55eb63;
             color: #fff;
             cursor: pointer;
         }
         input[type="submit"]:hover {
-            background-color: #0056b3;
+            background-color: #ff76d8;
         }
         input[type="submit"]:active {
             transform: scale(0.95);
@@ -49,6 +49,27 @@
         }
         .register-link:hover {
             color: #0056b3;
+        }
+        .register-button {
+            display: inline-block;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            background-color: #007BFF;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .register-button:hover {
+            background-color: #0056b3;
+        }
+
+        .center-container {
+            text-align: center;
         }
     </style>
 </head>
@@ -65,6 +86,10 @@
             <input type="submit" value="Master Login">
         </form>
     </div>
-    <a class="register-link" href="/register">Register</a>
+
+    <div class="center-container">
+        <a class="register-button" href="/register">Register</a>
+    </div>
+
 </body>
 </html>
